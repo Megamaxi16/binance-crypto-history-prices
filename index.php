@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Título da Página</title>
+    <title>Arqueólogo de cripto</title>
 </head>
 
 <?php
@@ -40,11 +40,11 @@ if(!empty($symbol) && !empty($tempo_grafico) && !empty($data_inicial) && !empty(
         <li>
             <label>Escolha a Cripto: </label>
                 <select name="symbol" id="symbol">
-                    <option value="BTCUSD">BTCUSD</option>
-                    <option value="ETHUSD">ETHUSD</option>
-                    <option value="SOLUSD">SOLUSD</option>
-                    <option value="BNBUSD">BNBUSC</option>
-                    <option value="LINKUSD">LINKUSD</option>
+                    <option value="BTCUSDT">Bitcoin/USDT</option>
+                    <option value="ETHUSDT">Ethereum/USDT</option>
+                    <option value="SOLUSDT">Solana/USDT</option>
+                    <option value="BNBUSDT">BinanceUSDT</option>
+                    <option value="LINKUSDT">Chainlink/USDT</option>
                 </select>
             </label>
         </li>

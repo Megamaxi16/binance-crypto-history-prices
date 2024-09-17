@@ -5,7 +5,7 @@
 //require "conecta_banco.php";
 
 
-//função que chama tudo, antes não era uma função mas agora é. Transformei em função para deixar o index mais focado em frontend, to com preguiça de deixar bunitinho.
+//função que chama tudo, antes não era uma função mas agora é. Transformei em função para deixar o index mais focado em frontend, to com preguiça de deixar bonitinho.
 function chamador($conexao, $simbolo, $intervalo, $timestamp_inicial, $timestamp_final){
 
 $url_base = "https://api.binance.com/api/v3/klines";
@@ -13,10 +13,10 @@ $url_base = "https://api.binance.com/api/v3/klines";
 //tratar: intervalo, e timestamps
 
 
-echo $simbolo."<br>"; //= "BTCUSDT"; // Par BTC/USDT pegar via post
-echo $intervalo."<br>"; //= "1d";    // Intervalo de tempo diário -> pegar via post
-echo $timestamp_inicial."<br>"; //= strtotime('2017-01-01') * 1000; // Converter para milissegundos - pegar via post
-echo $timestamp_final."<br>"; //= strtotime('2024-09-14') * 1000;   // Converter para milissegundos -> pegar via post
+echo $simbolo."<br>"; //= "BTCUSDT"; 
+echo $intervalo."<br>"; //= "1d";    
+echo $timestamp_inicial."<br>"; //= strtotime('2017-01-01') * 1000;
+echo $timestamp_final."<br>"; //= strtotime('2024-09-14') * 1000;
 echo $numero_de_velas= 10;
 
 
@@ -41,7 +41,7 @@ function historico_temporal($conexao, $url_base, $simbolo, $intervalo, $timestam
 
 
     foreach($resultado as $vela){
-        /*
+        echo "O que é isso? : ".$vela."<br>";
         echo "Momento: ".gmdate('d / m / Y H:i:s', $vela[0]/1000)."<br>";
         echo "Momento timestamp: ".$vela[0]."<br>";
         echo "Preço de Abertura: ".$vela[1]."<br>";
@@ -49,7 +49,7 @@ function historico_temporal($conexao, $url_base, $simbolo, $intervalo, $timestam
         echo "Preço Mínimo: ".$vela[3]."<br>";
         echo "Preço de Fechamento: ".$vela[4]."<br>";
         echo "Volume: ".$vela[5]."<br>";
-        */
+        
 
         //chama a função que prepara a query
         $query_funcao = valores($query_funcao, gmdate('Y-m-d H:i:s', $vela[0]/1000), $vela[1], $vela[2], $vela[3], $vela[4], $vela[5], "grafico_diario");    
@@ -76,6 +76,10 @@ function historico_temporal($conexao, $url_base, $simbolo, $intervalo, $timestam
 
 
 function chama_api($url_base, $simbolo, $intervalo, $timestamp_inicial, $numero_de_velas){
+
+    //primeiro verificar se está tudo ok
+    
+
 
     $url = $url_base ."?symbol=".$simbolo."&interval=".$intervalo."&startTime=".$timestamp_inicial."&limit=".$numero_de_velas;
 
