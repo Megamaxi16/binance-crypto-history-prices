@@ -1,4 +1,5 @@
 <?php
+//Hello World
 //https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1m&startTime=165531956000&limit=50
 
 //require "conecta_banco.php";
