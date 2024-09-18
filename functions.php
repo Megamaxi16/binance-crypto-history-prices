@@ -1,5 +1,10 @@
 <?php
-//Hello World
+/*Erros a serem consertados:
+    -Tá inserindo no banco bem mais do que a data final
+    -Tratar melhorar as possibilidades de uso indo por parte do usuário
+    -Isso vai funcionar mas vai ser meia boca
+
+*/
 //https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1m&startTime=165531956000&limit=50
 
 //require "conecta_banco.php";
@@ -7,18 +12,10 @@
 
 //função que chama tudo, antes não era uma função mas agora é. Transformei em função para deixar o index mais focado em frontend, to com preguiça de deixar bonitinho.
 function chamador($conexao, $simbolo, $intervalo, $timestamp_inicial, $timestamp_final){
-
+echo "Timestamp final: ".$timestamp_final."<br>";
 $url_base = "https://api.binance.com/api/v3/klines";
 
-//tratar: intervalo, e timestamps
-
-
-echo $simbolo."<br>"; //= "BTCUSDT"; 
-echo $intervalo."<br>"; //= "1d";    
-echo $timestamp_inicial."<br>"; //= strtotime('2017-01-01') * 1000;
-echo $timestamp_final."<br>"; //= strtotime('2024-09-14') * 1000;
-echo $numero_de_velas= 10;
-
+$numero_de_velas= 1000;
 
 //pega o timestamp de milésimo do início para calcular o tempo de resposta
 $comeco_exec = microtime(true);
@@ -33,15 +30,19 @@ echo "<br> Tempo de execução: ". $tempo_execucao;
 
 function historico_temporal($conexao, $url_base, $simbolo, $intervalo, $timestamp_inicial, $timestamp_final, $numero_de_velas){
 
+    //debug do $timestamp_final
+    echo "Timestamp final: ".$timestamp_final."<br>";
+
+
     //pega as velas baseado no intervalo mandado
     $resultado = chama_api($url_base, $simbolo, $intervalo, $timestamp_inicial, $numero_de_velas);
 
-    //o escopo pode ser confuso por causa da recursividade
+    //o escopo pode ser confuso por causa da recursividade mas eu declarei fora do while
     $query_funcao = "";
 
-
     foreach($resultado as $vela){
-        echo "O que é isso? : ".$vela."<br>";
+        
+        /*
         echo "Momento: ".gmdate('d / m / Y H:i:s', $vela[0]/1000)."<br>";
         echo "Momento timestamp: ".$vela[0]."<br>";
         echo "Preço de Abertura: ".$vela[1]."<br>";
@@ -49,37 +50,44 @@ function historico_temporal($conexao, $url_base, $simbolo, $intervalo, $timestam
         echo "Preço Mínimo: ".$vela[3]."<br>";
         echo "Preço de Fechamento: ".$vela[4]."<br>";
         echo "Volume: ".$vela[5]."<br>";
-        
+        */
 
-        //chama a função que prepara a query
-        $query_funcao = valores($query_funcao, gmdate('Y-m-d H:i:s', $vela[0]/1000), $vela[1], $vela[2], $vela[3], $vela[4], $vela[5], "grafico_diario");    
+        $teste_timestamp = intval($vela[0])/1000;
 
-        //Armazenando o ultimo momento para fazer o próximo pedido
-        $momento_final = $vela[0];
-        
-        echo "<br>";
+        //chama a função que prepara a query -> o nome está gráfico_diário pois não tratei a variável ainda, é basicamente o nome da tabela do banco
+        $query_funcao = valores($query_funcao, gmdate('Y-m-d H:i:s', $teste_timestamp), $vela[1], $vela[2], $vela[3], $vela[4], $vela[5]);
+
+        //Armazenando o ultimo momento em milissegundos para a próxima requisição
+        $momento_atual = $vela[0];
+
+
     }
 
     //insere no banco com query gigante preparada
     insere_banco_memoria($conexao, $query_funcao, "grafico_diario");
 
-    echo "<br> Momento Atual requisição: ". gmdate('d / m / Y H:i:s',$momento_final/1000)."<br>Timestamp Atual da Requisição:".$momento_final."<br><br>";
+    echo "<br> Momento Atual requisição: ". gmdate('d / m / Y H:i:s',$momento_atual/1000)."<br>Timestamp Atual da Requisição:".$momento_atual."<br><br>";
 
-    //manda esperar 10 segundos para chamar a função de forma recursiva
-    if($momento_final/1000 <= $timestamp_final){
+    echo $momento_atual ."<=".$timestamp_final;
+
+    //manda esperar 1 segundo para chamar a função de forma recursiva
+
+    if($momento_atual <= $timestamp_final){
         sleep(1);
-        //$proximo_momento_inicial = strtotime("+1 day",$momento_final);
-        //historico_temporal($conexao, $url_base, $simbolo, $intervalo, $proximo_momento_inicial, $numero_de_velas);
+        
+        $proximo_momento_inicial = $momento_atual/1000 + (60*60*24);
+        $proximo_momento_inicial = $proximo_momento_inicial*1000;
+
+        //troquei $momento_atual por $timestamp_final (penultimo parametro) se der merda reverter
+        historico_temporal($conexao, $url_base, $simbolo, $intervalo, $proximo_momento_inicial, $timestamp_final, $numero_de_velas);
     }
+
+
 }
 
 
 
 function chama_api($url_base, $simbolo, $intervalo, $timestamp_inicial, $numero_de_velas){
-
-    //primeiro verificar se está tudo ok
-    
-
 
     $url = $url_base ."?symbol=".$simbolo."&interval=".$intervalo."&startTime=".$timestamp_inicial."&limit=".$numero_de_velas;
 
@@ -132,14 +140,18 @@ function valores($query_antiga, $momento, $preco_abertura, $preco_max, $preco_mi
 
 function insere_banco_memoria($conexao, $query, $tempo_grafico){
 
-    $query_final = "insert into ".$tempo_grafico."(horario_abertura, preco_abertura, high, low, preco_fechamento, volume) values ".$query;
+    //verifico se query está vazio para não fazer com que dê erro no final
+    if(!empty($query)){
+        $query_final = "insert into ".$tempo_grafico."(horario_abertura, preco_abertura, high, low, preco_fechamento, volume) values ".$query;
 
 
-    $query_final = rtrim($query_final, ", ");
+        $query_final = rtrim($query_final, ", ");
 
-    if(mysqli_execute_query($conexao, $query_final)){
-        echo "<br><h3>Inserido com sucesso 2</h3><br>";
+        //echo ($query_final);
+
+        if(mysqli_query($conexao, $query_final)){
+            echo "<br><h3>Inserido com sucesso 2</h3><br>";
+        }
     }
-
 }
 ?>
