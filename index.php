@@ -6,6 +6,7 @@
 </head>
 
 <?php
+set_time_limit(14400);
 require "functions.php";
 require "conecta_banco.php";
 
@@ -52,7 +53,7 @@ if(!empty($symbol) && !empty($tempo_grafico) && !empty($data_inicial) && !empty(
         <li>
         <label>Escolha o tempo gráfico: </label>
             <select name="tempo_grafico" id="tempo_grafico">
-                <option value="1m">Mensal</option>
+                <!--<option value="1mes">Mensal</option>-->
                 <option value="1d">Diário</option>
                 <option value="4h">4 Horas</option>
                 <option value="1h">1 Hora</option>
