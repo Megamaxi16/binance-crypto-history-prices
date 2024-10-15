@@ -3,8 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Sobre</title>
+    <link rel="icon" sizes="16x16" href="images/bitcoin_logo_white_transparent_16x16.png">
+    <link rel="icon" sizes="32x32" href="images/bitcoin_logo_white_transparent_32x32.png">
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" crossorigin="anonymous">
     <link rel="stylesheet" href="css/style.css">
+
 </head>
 
 <body>
