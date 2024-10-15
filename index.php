@@ -1,10 +1,3 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <title>Arqueólogo de cripto</title>
-</head>
-
 <?php
 set_time_limit(14400);
 require "functions.php";
@@ -24,15 +17,22 @@ if(!empty($symbol) && !empty($tempo_grafico) && !empty($data_inicial) && !empty(
     //verifica que o usuário não confundiu data inicial e final
     if($data_final > $data_inicial){
     chamador($conexao, $symbol, $tempo_grafico, $data_inicial, $data_final);
+    } else {
+        echo "A data final deve ser depois da data incial";
     }
 }
 ?>
 
 
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Crypto Archaeologist</title>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.css">
+</head>
 
-<style type="text/css">
-
-</style>
 <body>
 
 <form method="post">
@@ -81,5 +81,8 @@ if(!empty($symbol) && !empty($tempo_grafico) && !empty($data_inicial) && !empty(
 
 </form>
 
+
+<script src="js\jquery-3.7.1.min.js"></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>
