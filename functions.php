@@ -186,4 +186,27 @@ function insere_banco_memoria($conexao, $query, $nome_do_banco){
         }
     }
 }
+
+function pega_simbolos($conexao){
+
+    $query = "select * from symbols limit 25;";
+
+    $resultado = mysqli_query($conexao, $query);
+
+    if(mysqli_num_rows($resultado) > 0){
+        $simbolos = array();
+
+        while($linha = mysqli_fetch_assoc($resultado)){
+            $simbolos[] = $linha["symbol"];
+        }
+
+        $_SESSION["simbolos"] = $simbolos;
+
+    }
+    else{
+        echo "consulta por símbolo não retornou nada";
+    }
+
+    
+}
 ?>

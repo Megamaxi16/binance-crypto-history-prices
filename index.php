@@ -1,8 +1,10 @@
 <?php
+session_start();
+
 set_time_limit(14400);
 require "functions.php";
 require "conecta_banco.php";
-
+require "iniciar.php";
 $symbol = filter_input(INPUT_POST,"symbol", FILTER_SANITIZE_SPECIAL_CHARS);
 $tempo_grafico = filter_input(INPUT_POST, "tempo_grafico", FILTER_SANITIZE_SPECIAL_CHARS);
 $data_inicial = filter_input(INPUT_POST, "data_inicial", FILTER_SANITIZE_SPECIAL_CHARS);
@@ -46,11 +48,17 @@ if(!empty($symbol) && !empty($tempo_grafico) && !empty($data_inicial) && !empty(
         <div class= "form-group">
             <label>Par de Criptomoeda</label>
             <select class="form-control" id="symbol">
-            <option value="BTCUSDT">Bitcoin/USDT</option>
+                <?php 
+                    foreach($_SESSION["simbolos"] as $simbolo){
+                        echo "<option value=".$simbolo.">".$simbolo."</option>";
+                    }                    
+                    /*<option value="BTCUSDT">Bitcoin/USDT</option>
                     <option value="ETHUSDT">Ethereum/USDT</option>
                     <option value="SOLUSDT">Solana/USDT</option>
                     <option value="BNBUSDT">Binance/USDT</option>
-                    <option value="LINKUSDT">Chainlink/USDT</option>
+                    <option value="LINKUSDT">Chainlink/USDT</option>*/
+
+                ?>
             </select>
         </div>
         
