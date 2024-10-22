@@ -29,6 +29,9 @@
                 <li class="nav-item">
                     <a href="sobre.php" class="nav-link">Sobre</a>
                 </li>
+                <li class="nav-item">
+                    <a href="add_symbol.php" class="nav-link">Adicionar Cripto</a>
+                </li>
             </ul>
         </div>
     </nav>

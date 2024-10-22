@@ -25,19 +25,7 @@ if(!empty($symbol) && !empty($tempo_grafico) && !empty($data_inicial) && !empty(
 }
 ?>
 
-
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <title>Crypto Archaeologist</title>
-    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="icon" sizes="16x16" href="images/bitcoin_logo_white_transparent_16x16.png">
-    <link rel="icon" sizes="32x32" href="images/bitcoin_logo_white_transparent_32x32.png">
-</head>
-
-<body>
+<?php head("home");?>
 
 <?php include "header.php"; ?>
 
@@ -52,26 +40,14 @@ if(!empty($symbol) && !empty($tempo_grafico) && !empty($data_inicial) && !empty(
                     foreach($_SESSION["simbolos"] as $simbolo){
                         echo "<option value=".$simbolo.">".$simbolo."</option>";
                     }                    
-                    /*<option value="BTCUSDT">Bitcoin/USDT</option>
-                    <option value="ETHUSDT">Ethereum/USDT</option>
-                    <option value="SOLUSDT">Solana/USDT</option>
-                    <option value="BNBUSDT">Binance/USDT</option>
-                    <option value="LINKUSDT">Chainlink/USDT</option>*/
-
                 ?>
             </select>
         </div>
         
-            <!-- <label>Escolha a Cripto: </label>
-                <select name="symbol" id="symbol">
-                    <option value="BTCUSDT">Bitcoin/USDT</option>
-                    <option value="ETHUSDT">Ethereum/USDT</option>
-                    <option value="SOLUSDT">Solana/USDT</option>
-                    <option value="BNBUSDT">BinanceUSDT</option>
-                    <option value="LINKUSDT">Chainlink/USDT</option>
-                </select>
-            </label> -->
-
+            <!-- Add novas criptos -->
+            <div class="d-flex justify-content-center">
+            <a class="btn btn-primary" href="add_symbol.php">Adicione Novo Par</a>
+            </div>
 
         <div class= "form-group">
             <label>Escolha o tempo gráfico: </label>
@@ -108,8 +84,4 @@ if(!empty($symbol) && !empty($tempo_grafico) && !empty($data_inicial) && !empty(
     </form>
 </div>
 
-<script src="js\jquery-3.7.1.min.js"></script>
-<script src="bootstrap/js/bootstrap.min.js"></script>
-<script src="js/script.js"></script>
-</body>
-</html>
+<?php footer(); ?>
