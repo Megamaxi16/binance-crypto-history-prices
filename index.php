@@ -23,10 +23,12 @@ if(!empty($symbol) && !empty($tempo_grafico) && !empty($data_inicial) && !empty(
         echo "A data final deve ser depois da data incial";
     }
 }
-?>
 
-<?php head("home");?>
 
+//começa o front
+include_once "head.php"?>
+<title>Home</title>
+<body>
 <?php include "header.php"; ?>
 
 <div class="container">
@@ -84,4 +86,4 @@ if(!empty($symbol) && !empty($tempo_grafico) && !empty($data_inicial) && !empty(
     </form>
 </div>
 
-<?php footer(); ?>
+<?php include_once "footer.php"; ?>

@@ -9,7 +9,4 @@ $conexao = mysqli_connect(nome_servidor, user, senha, nome_banco);
 if(!$conexao){
 die('deu erro, vc é burro'. mysqli_connect_error());
 }
-
-echo "Conectado com sucesso <br><br>";
-
 ?>
