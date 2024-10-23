@@ -20,7 +20,7 @@ include_once "head.php";?>
         </div>
     </div>
 </form>
-<div class="d-flex justify-content-center" style="background:blue;" id="result">
+<div class="d-flex justify-content-center" id="result">
 
 </div>
 
@@ -42,7 +42,6 @@ include_once "head.php";?>
                 success: function(response) {
                     //exibição do resultado retornado pelos echos do php
                     //vou retornar as classes prontas também
-                    console.log("Função succes chamada");
                     $('#result').html(response);
                 },
                 error: function(){

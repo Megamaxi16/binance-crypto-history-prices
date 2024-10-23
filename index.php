@@ -1,6 +1,6 @@
 <?php
 session_start();
-
+header('Access-Control-Allow-Origin: *');
 set_time_limit(14400);
 require "functions.php";
 require "conecta_banco.php";
@@ -41,7 +41,7 @@ include_once "head.php"?>
                 <?php 
                     foreach($_SESSION["simbolos"] as $simbolo){
                         echo "<option value=".$simbolo.">".$simbolo."</option>";
-                    }                    
+                    }                
                 ?>
             </select>
         </div>
@@ -85,5 +85,32 @@ include_once "head.php"?>
 
     </form>
 </div>
+<script>
 
+    $(document).ready(function(){
+
+        $('#symbol').on('change', function(){
+
+            let simboloPesquisa = $('#symbol').val();
+
+            //let url = "https://api.binance.com/api/v3/klines/?symbol="+ simboloPesquisa + "&interval=1d&startTime=0&limit=1"
+
+            $.ajax({
+                url: "back-ajax/index_jquery.php",
+                type: 'POST',
+                data: {symbol: simboloPesquisa },
+                success: function(primeiraData){
+
+                    console.log ("oi: "+primeiraData);
+                    $('#data_inicial').attr('min', primeiraData);
+
+                },
+                error: function(){
+                    console.log("Vish, deu erro");
+                }
+            });
+        });
+    });
+
+</script>
 <?php include_once "footer.php"; ?>
