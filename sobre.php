@@ -1,3 +1,23 @@
+<?php
+
+require "functions.php";
+
+
+    $comeco_url = "https://api.binance.com/api/v3/klines";
+
+    $resultado = chama_api($comeco_url, "BTCUSDTasd", "1d", 0, 1);
+
+    if(!is_array($resultado)){
+        echo "Não é array";
+    }
+
+    else{
+        //echo $resultado[0][0];
+    echo date("Y-m-d", $resultado[0][0]/1000);
+    }
+
+
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>

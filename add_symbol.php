@@ -51,4 +51,5 @@ include_once "head.php";?>
         });
     });
 </script>
+
 <?php include_once "footer.php"; ?>

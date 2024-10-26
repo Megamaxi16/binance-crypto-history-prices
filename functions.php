@@ -131,8 +131,14 @@ function chama_api($url_base, $simbolo, $intervalo, $timestamp_inicial, $numero_
     //faz com que retorne a resposta como string
     curl_setopt($sessao_curl, CURLOPT_RETURNTRANSFER, true);
 
-    //resultado vem em json, o true no final é pra transformar em array
-    return json_decode(curl_exec($sessao_curl), true);
+    //armazeno aqui pra fechar o curl e dps dar retorno. True no final é pra transformar em array
+    $retorno = json_decode(curl_exec($sessao_curl), true);
+
+    //print_r($retorno);
+
+    curl_close($sessao_curl);
+
+    return $retorno;
 
 }
 
@@ -206,5 +212,9 @@ function pega_simbolos($conexao){
     else{
         echo "consulta por símbolo não retornou nada";
     }    
+}
+
+function hoje(){
+    return date("Y-m-d");
 }
 ?>

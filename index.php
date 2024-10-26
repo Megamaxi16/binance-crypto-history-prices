@@ -1,10 +1,14 @@
 <?php
-session_start();
-header('Access-Control-Allow-Origin: *');
+if (session_status() === PHP_SESSION_NONE) {
+    session_start(); // Inicia a sessão se ainda não foi iniciada
+}
 set_time_limit(14400);
 require "functions.php";
 require "conecta_banco.php";
 require "iniciar.php";
+require_once "arqueologo.php";
+
+
 $symbol = filter_input(INPUT_POST,"symbol", FILTER_SANITIZE_SPECIAL_CHARS);
 $tempo_grafico = filter_input(INPUT_POST, "tempo_grafico", FILTER_SANITIZE_SPECIAL_CHARS);
 $data_inicial = filter_input(INPUT_POST, "data_inicial", FILTER_SANITIZE_SPECIAL_CHARS);
@@ -24,6 +28,7 @@ if(!empty($symbol) && !empty($tempo_grafico) && !empty($data_inicial) && !empty(
     }
 }
 
+$hoje = hoje();
 
 //começa o front
 include_once "head.php"?>
@@ -67,20 +72,16 @@ include_once "head.php"?>
 
         <div class= "form-group">
             <label>Data Inicial:</label>
-            <input type="date" name="data_inicial" id="data_inicial" class="form-control" required>
+            <input type="date" name="data_inicial" id="data_inicial" class="form-control" required max="<?= $hoje ?>">
         </div>
 
         <div class= "form-group">
             <label>Data Final:</label>
-            <input type="date" name="data_final" id="data_final" class="form-control" required>
+            <input type="date" name="data_final" id="data_final" class="form-control" required max="<?= $hoje ?>">
         </div>
 
 
             <input type="submit" value="Enviar" class="btn btn-primary">
-
-
-
-
 
 
     </form>
@@ -101,8 +102,8 @@ include_once "head.php"?>
                 data: {symbol: simboloPesquisa },
                 success: function(primeiraData){
 
-                    console.log ("oi: "+primeiraData);
                     $('#data_inicial').attr('min', primeiraData);
+                    $('#data_final').attr('min', primeiraData)
 
                 },
                 error: function(){
