@@ -38,53 +38,17 @@ include_once "head.php"?>
 
 <div class="container">
 
-    <form method="post">
-
-        <div class= "form-group">
-            <label>Par de Criptomoeda</label>
-            <select class="form-control" id="symbol">
-                <?php 
-                    foreach($_SESSION["simbolos"] as $simbolo){
-                        echo "<option value=".$simbolo.">".$simbolo."</option>";
-                    }                
-                ?>
-            </select>
-        </div>
-        
-            <!-- Add novas criptos -->
-            <div class="d-flex justify-content-center">
-            <a class="btn btn-primary" href="add_symbol.php">Adicione Novo Par</a>
-            </div>
-
-        <div class= "form-group">
-            <label>Escolha o tempo gráfico: </label>
-            <select name="tempo_grafico" class="form-control" id="tempo_grafico">
-                <!--<option value="1mes">Mensal</option>-->
-                <option value="1d">Diário</option>
-                <option value="4h">4 Horas</option>
-                <option value="1h">1 Hora</option>
-                <option value="30m">30 Minutos</option>
-                <option value="15m">15 Minutos</option>
-                <option value="5m">5 Minutos</option>
-                <option value="1m">1 Minuto</option>
-            </select>
-        </div>
-
-        <div class= "form-group">
-            <label>Data Inicial:</label>
-            <input type="date" name="data_inicial" id="data_inicial" class="form-control" required max="<?= $hoje ?>">
-        </div>
-
-        <div class= "form-group">
-            <label>Data Final:</label>
-            <input type="date" name="data_final" id="data_final" class="form-control" required max="<?= $hoje ?>">
-        </div>
+<!-- 
+-Puxar do banco quantos pares estão com algum registro e armazenar em session 
+-Limi
 
 
-            <input type="submit" value="Enviar" class="btn btn-primary">
+
+-->
 
 
-    </form>
+
+
 </div>
 <script>
 

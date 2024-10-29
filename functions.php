@@ -214,6 +214,27 @@ function pega_simbolos($conexao){
     }    
 }
 
+function pega_simbolos_ativos($conexao){
+
+    $query = "select distinct symbol from tempo_1d";
+
+    $resultado = mysqli_query($conexao, $query);
+
+    if(mysqli_num_rows($resultado) > 0){
+        $simbolos_ativos = array();
+
+        while($linha = mysqli_fetch_assoc($resultado)){
+
+            $simbolos_ativos[] = $linha["symbol"];
+        }
+
+        $_SESSION["simbolos_ativos"] = $simbolos_ativos;
+         
+    }
+
+}
+
+
 function hoje(){
     return date("Y-m-d");
 }

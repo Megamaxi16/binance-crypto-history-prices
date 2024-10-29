@@ -23,7 +23,8 @@ include_once "head.php"?>
 
         <div class= "form-group">
             <label>Par de Criptomoeda</label>
-            <select class="form-control" id="symbol" name="symbol">
+            <select class="form-control" id="symbol" name="symbol" required>
+                <option value="">Selecione...</option>
                 <?php 
                     foreach($_SESSION["simbolos"] as $simbolo){
                         echo "<option value=".$simbolo.">".$simbolo."</option>";
