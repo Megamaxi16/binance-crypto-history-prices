@@ -14,22 +14,22 @@
 
 //função que chama tudo, antes não era uma função mas agora é. Transformei em função para deixar o index mais focado em frontend, to com preguiça de deixar bonitinho.
 function chamador($conexao, $simbolo, $intervalo, $timestamp_inicial, $timestamp_final){
-echo "Timestamp final: ".$timestamp_final."<br>";
-$url_base = "https://api.binance.com/api/v3/klines";
+    echo "Timestamp final: ".$timestamp_final."<br>";
+    $url_base = "https://api.binance.com/api/v3/klines";
 
-//tratar o tempo gráfico para chamar o nome do banco de dados
-$nome_do_banco = "grafico_".$intervalo."_".$simbolo;
+    //tratar o tempo gráfico para chamar o nome do banco de dados
+    $nome_do_banco = "grafico_".$intervalo."_".$simbolo;
 
-$numero_de_velas= 1000;
+    $numero_de_velas= 1000;
 
-//pega o timestamp de milésimo do início para calcular o tempo de resposta
-$comeco_exec = microtime(true);
+    //pega o timestamp de milésimo do início para calcular o tempo de resposta
+    $comeco_exec = microtime(true);
 
-historico_temporal($conexao, $url_base, $simbolo, $intervalo, $timestamp_inicial, $timestamp_final, $numero_de_velas, $nome_do_banco);
+    historico_temporal($conexao, $url_base, $simbolo, $intervalo, $timestamp_inicial, $timestamp_final, $numero_de_velas, $nome_do_banco);
 
-$fim_exec_parc = microtime(true);
-$tempo_execucao = floatval($fim_exec_parc) - floatval($comeco_exec);
-echo "<br> Todos os Registros inseridos com sucesso!!<br> Tempo de execução: ". $tempo_execucao."<br> Máximo de memória usada: ". floor(memory_get_peak_usage()/1024) ."kB";
+    $fim_exec_parc = microtime(true);
+    $tempo_execucao = floatval($fim_exec_parc) - floatval($comeco_exec);
+    echo "<br> Todos os Registros inseridos com sucesso!!<br> Tempo de execução: ". $tempo_execucao."<br> Máximo de memória usada: ". floor(memory_get_peak_usage()/1024) ."kB";
 
 }
 

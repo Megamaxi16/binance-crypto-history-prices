@@ -3,10 +3,10 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start(); // Inicia a sessão se ainda não foi iniciada
 }
 set_time_limit(14400);
-require "functions.php";
-require "conecta_banco.php";
+require_once "functions.php";
+require_once "conecta_banco.php";
 require "iniciar.php";
-require_once "arqueologo.php";
+//require_once "arqueologo.php";
 
 
 $symbol = filter_input(INPUT_POST,"symbol", FILTER_SANITIZE_SPECIAL_CHARS);

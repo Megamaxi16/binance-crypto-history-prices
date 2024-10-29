@@ -9,26 +9,6 @@ require "functions.php";
 require "conecta_banco.php";
 require "iniciar.php";
 
-
-$symbol = filter_input(INPUT_POST,"symbol", FILTER_SANITIZE_SPECIAL_CHARS);
-$tempo_grafico = filter_input(INPUT_POST, "tempo_grafico", FILTER_SANITIZE_SPECIAL_CHARS);
-$data_inicial = filter_input(INPUT_POST, "data_inicial", FILTER_SANITIZE_SPECIAL_CHARS);
-$data_final = filter_input(INPUT_POST, "data_final", FILTER_SANITIZE_SPECIAL_CHARS);
-
-if(!empty($symbol) && !empty($tempo_grafico) && !empty($data_inicial) && !empty($data_final)){
-
-    //transformo em timestamp e multiplico por mil para dar o timestamp em milissegundos, necessário para rodar a API
-    $data_inicial = strtotime($data_inicial)*1000;
-    $data_final = strtotime($data_final)*1000;
-
-    //verifica que o usuário não confundiu data inicial e final
-    if($data_final > $data_inicial){
-    chamador($conexao, $symbol, $tempo_grafico, $data_inicial, $data_final);
-    } else {
-        echo "A data final deve ser depois da data incial";
-    }
-}
-
 $hoje = hoje();
 
 //começa o front
@@ -43,7 +23,7 @@ include_once "head.php"?>
 
         <div class= "form-group">
             <label>Par de Criptomoeda</label>
-            <select class="form-control" id="symbol">
+            <select class="form-control" id="symbol" name="symbol">
                 <?php 
                     foreach($_SESSION["simbolos"] as $simbolo){
                         echo "<option value=".$simbolo.">".$simbolo."</option>";
@@ -82,15 +62,52 @@ include_once "head.php"?>
         </div>
 
 
-            <input type="submit" value="Enviar" class="btn btn-primary">
+            <input type="submit" value="Enviar" class="btn btn-primary" id="enviar">
 
 
     </form>
 </div>
+
+<div id="caixinha" style="background-color:aquamarine;">
+
+
+
+</div>
+
+
 <script>
 
     $(document).ready(function(){
 
+        $('#enviar').on('click', function(e){
+            e.preventDefault();
+
+            let valoresArqueologo = {
+                symbol: $('#symbol').val(),
+                tempo_grafico: $('#tempo_grafico').val(),
+                data_inicial: $('#data_inicial').val(),
+                data_final: $('#data_final').val()
+            };
+
+            $.ajax({
+                url: "back-ajax/gerador_jquery.php",
+                type: "POST",
+                data: {enviar: valoresArqueologo},
+                success: function(mensagem){
+                    
+                    $('#caixinha').html(mensagem);
+
+                },
+                error: function(){
+                    console.log("Vish, deu erro");
+                }
+            });
+
+        })
+
+
+
+        // verificar que simbolo já existe
         $('#symbol').on('change', function(){
 
             let simboloPesquisa = $('#symbol').val();

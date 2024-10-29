@@ -5,15 +5,15 @@
     -Tratar melhorar as possibilidades de uso por parte do usuário
     -Isso vai funcionar mas vai ser meia boca
     -Tratar quanto de incremento vai ter
-    -Trocar o switch case de lugar
-    -Otimizar Uso de memória
+    -Trocar o switch case de lugar ok
+    -Otimizar Uso de memória ok
 */
 //https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1m&startTime=165531956000&limit=50
 
-include "conecta_banco.php";
-include "functions.php";
+include_once "conecta_banco.php";
+include_once "functions.php";
 
-comecar_insercao($conexao, "BTCUSDT", "1d", /*1502928000000*/ 1652046466339, (time()*1000) - 1000*60*60*24);
+//comecar_insercao($conexao, "BTCUSDT", "1d", 1502928000000 /*1652046466339*/, (time() - 60*60*24)*1000);
 
 function comecar_insercao($conexao, $simbolo, $intervalo, $timestamp_inicio_chamada, $timestamp_final){
 
@@ -25,27 +25,53 @@ function comecar_insercao($conexao, $simbolo, $intervalo, $timestamp_inicio_cham
 
     //inicio tempo de resposta
     $comeco_exec = microtime(true);
+
+    //tratando o incremento para ele ser dinamico
+    $incremento = null;
+    switch($intervalo){
+        case "1d":
+            $incremento = 60*60*24*1000;
+            break;
+        case "4h":
+            $incremento = 60*60*4*1000;
+            break;
+        case "1h":
+            $incremento = 60*60*1000;
+            break;
+        case "30m":
+            $incremento = 60*30*1000;
+            break;
+        case "15m":
+            $incremento = 60*15*1000;
+            break;
+        case "5m":
+            $incremento = 60*5*1000;
+            break;
+        case "1m":
+            $incremento = 60*1000;
+            break;
+    }
     
     //variável que escolhe o método de envio de dados
     $metodo = 1;
 
-    $condicao_parada = 0;;
+    $condicao_parada = 0;
 
     while($condicao_parada == 0){
-        echo "olá";
         $resultado = chama_api($url_base, $simbolo, $intervalo, $timestamp_inicio_chamada, $numero_de_velas);
 
         if(isset($resultado['code'])){
             $condicao_parada = 1;
+            return "<br> Caiu no 'code': ".$resultado['code']."<br>";
             break;
         }
-
+        
 
         switch ($metodo){
             case 1:
         //chama a função mais rapida em tempo de resposta
 
-                $timestamp_inicio_chamada = insere_banco_tempo($conexao, $resultado, $tabela, $simbolo);
+                $timestamp_inicio_chamada = insere_banco_tempo($conexao, $resultado, $tabela, $simbolo, $incremento);
 
             break;
 
@@ -58,14 +84,21 @@ function comecar_insercao($conexao, $simbolo, $intervalo, $timestamp_inicio_cham
             break;
         }
 
+        if($timestamp_inicio_chamada >= $timestamp_final){
+            $condicao_parada = 1;
+            //echo "<br>Timestamp Final:".$timestamp_final."<br>";
+            return "<br>Inserido com sucesso!<br>";
+            break;
+        }
     }
-
 }
 
 
 
 
-function insere_banco_tempo($conexao, $dados, $tabela, $simbolo){
+
+//esta dentro de um while
+function insere_banco_tempo($conexao, $dados, $tabela, $simbolo, $incremento){
 
     //tratar a parte final da query
     $query_gigantesca="";
@@ -82,7 +115,10 @@ function insere_banco_tempo($conexao, $dados, $tabela, $simbolo){
 
         $query_gigantesca = $query_acc."('".gmdate('Y-m-d H:i:s',intval($linha[0])/1000)."', ".$linha[1].", ".$linha[2].", ".$linha[3].", ".$linha[4].", ".$linha[5].", '".$simbolo."'), ";
 
+
+        //milissegundos
         $ultimo_timestamp_parcial = $linha[0];
+        //echo "<br> Timestamp preparo: ". $ultimo_timestamp_parcial;
     }
 
 
@@ -92,16 +128,17 @@ function insere_banco_tempo($conexao, $dados, $tabela, $simbolo){
         $query_final = rtrim($query_oficial, ", ");
 
         if(mysqli_query($conexao, $query_final)){
-        echo "<br><h3>Inserido com sucesso 2</h3><br>";
-        return  $ultimo_timestamp_parcial;
+        //echo "<br><h3>Inserido com sucesso 2</h3><br>";
+        return  $ultimo_timestamp_parcial + $incremento;
         }
         else{
-            echo "<br><h3>Deu Merda</h3><br>";
-            return $ultimo_timestamp_parcial;
+            //echo "<br><h3>Deu Merda</h3><br>";
+            return $ultimo_timestamp_parcial + $incremento;
         }
     }
     else{
-        echo "Erro na geração da query";
+        return "Erro na geração da query";
+        die;
     }
 
 
