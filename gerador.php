@@ -62,7 +62,7 @@ include_once "head.php"?>
         </div>
 
 
-            <input type="submit" value="Enviar" class="btn btn-primary" id="enviar">
+            <input type="submit" value="enviar" class="btn btn-primary" id="enviar">
 
 
     </form>
@@ -92,9 +92,8 @@ include_once "head.php"?>
             $.ajax({
                 url: "back-ajax/gerador_jquery.php",
                 type: "POST",
-                data: {enviar: valoresArqueologo},
+                data: valoresArqueologo,
                 success: function(mensagem){
-                    
                     $('#caixinha').html(mensagem);
 
                 },

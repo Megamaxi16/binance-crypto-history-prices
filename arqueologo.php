@@ -66,12 +66,18 @@ function comecar_insercao($conexao, $simbolo, $intervalo, $timestamp_inicio_cham
             break;
         }
         
+        if($timestamp_inicio_chamada >= $timestamp_final){
+            $condicao_parada = 1;
+            //echo "<br>Timestamp Final:".$timestamp_final."<br>";
+            echo "Inserido com sucesso TOTA";
+            break;
+        }
 
         switch ($metodo){
             case 1:
-        //chama a função mais rapida em tempo de resposta
 
-                $timestamp_inicio_chamada = insere_banco_tempo($conexao, $resultado, $tabela, $simbolo, $incremento);
+                //chama a função mais rapida em tempo de resposta
+                $timestamp_inicio_chamada = insere_banco_tempo($conexao, $resultado, $tabela, $simbolo, $incremento, $timestamp_final);
 
             break;
 
@@ -84,13 +90,11 @@ function comecar_insercao($conexao, $simbolo, $intervalo, $timestamp_inicio_cham
             break;
         }
 
-        if($timestamp_inicio_chamada >= $timestamp_final){
-            $condicao_parada = 1;
-            //echo "<br>Timestamp Final:".$timestamp_final."<br>";
-            return "<br>Inserido com sucesso!<br>";
-            break;
-        }
+
     }
+    $fim_exec = microtime(true);
+    $tempo_exec = $fim_exec - $comeco_exec;
+    return "<br>Inserido com sucesso!<br><br>tempo de execução:". $tempo_exec;
 }
 
 
@@ -98,7 +102,8 @@ function comecar_insercao($conexao, $simbolo, $intervalo, $timestamp_inicio_cham
 
 
 //esta dentro de um while
-function insere_banco_tempo($conexao, $dados, $tabela, $simbolo, $incremento){
+function insere_banco_tempo($conexao, $dados, $tabela, $simbolo, $incremento, $tempo_final){ 
+    $ultimo_timestamp_parcial = null;
 
     //tratar a parte final da query
     $query_gigantesca="";
@@ -112,6 +117,11 @@ function insere_banco_tempo($conexao, $dados, $tabela, $simbolo, $incremento){
         [4] = Preço de Fechamento
         [5] = Volume total (to armazenando isso????)
         */
+
+        //parar concatenação quando ficar igual ou maior que o tempo final
+        if($ultimo_timestamp_parcial >= $tempo_final){
+            break;
+        }
 
         $query_gigantesca = $query_acc."('".gmdate('Y-m-d H:i:s',intval($linha[0])/1000)."', ".$linha[1].", ".$linha[2].", ".$linha[3].", ".$linha[4].", ".$linha[5].", '".$simbolo."'), ";
 

@@ -1,11 +1,11 @@
 <?php
+require_once ("../arqueologo.php");
 
-require_once ("C:\xampp\htdocs\binance-crypto-history-prices/arqueologo.php");
+$symbol = filter_input(INPUT_POST, 'symbol', FILTER_SANITIZE_SPECIAL_CHARS);
+$tempo_grafico = filter_input(INPUT_POST, 'tempo_grafico', FILTER_SANITIZE_SPECIAL_CHARS);
+$data_inicial = filter_input(INPUT_POST, 'data_inicial', FILTER_SANITIZE_SPECIAL_CHARS);
+$data_final = filter_input(INPUT_POST, 'data_final', FILTER_SANITIZE_SPECIAL_CHARS);
 
-$symbol = filter_input(INPUT_POST,"symbol", FILTER_SANITIZE_SPECIAL_CHARS);
-$tempo_grafico = filter_input(INPUT_POST, "tempo_grafico", FILTER_SANITIZE_SPECIAL_CHARS);
-$data_inicial = filter_input(INPUT_POST, "data_inicial", FILTER_SANITIZE_SPECIAL_CHARS);
-$data_final = filter_input(INPUT_POST, "data_final", FILTER_SANITIZE_SPECIAL_CHARS);
 
 if(!empty($symbol) && !empty($tempo_grafico) && !empty($data_inicial) && !empty($data_final)){
 
@@ -22,6 +22,10 @@ if(!empty($symbol) && !empty($tempo_grafico) && !empty($data_inicial) && !empty(
     else {
         echo "A data final deve ser depois da data inicial";
     }
+}
+
+else{
+    echo "tem coisa que não passou no if";
 }
 
 ?>
