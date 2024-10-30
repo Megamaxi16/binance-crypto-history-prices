@@ -3,8 +3,9 @@
     pega_simbolos($conexao);
     }
     
-    if(!isset($_SESSION["simbolos"])){
+    if(!isset($_SESSION["simbolos_ativos"])){
         pega_simbolos_ativos($conexao);
+
     }
 
     

@@ -6,27 +6,6 @@ set_time_limit(14400);
 require_once "functions.php";
 require_once "conecta_banco.php";
 require "iniciar.php";
-//require_once "arqueologo.php";
-
-
-$symbol = filter_input(INPUT_POST,"symbol", FILTER_SANITIZE_SPECIAL_CHARS);
-$tempo_grafico = filter_input(INPUT_POST, "tempo_grafico", FILTER_SANITIZE_SPECIAL_CHARS);
-$data_inicial = filter_input(INPUT_POST, "data_inicial", FILTER_SANITIZE_SPECIAL_CHARS);
-$data_final = filter_input(INPUT_POST, "data_final", FILTER_SANITIZE_SPECIAL_CHARS);
-
-if(!empty($symbol) && !empty($tempo_grafico) && !empty($data_inicial) && !empty($data_final)){
-
-    //transformo em timestamp e multiplico por mil para dar o timestamp em milissegundos, necessário para rodar a API
-    $data_inicial = strtotime($data_inicial)*1000;
-    $data_final = strtotime($data_final)*1000;
-
-    //verifica que o usuário não confundiu data inicial e final
-    if($data_final > $data_inicial){
-    chamador($conexao, $symbol, $tempo_grafico, $data_inicial, $data_final);
-    } else {
-        echo "A data final deve ser depois da data incial";
-    }
-}
 
 $hoje = hoje();
 
@@ -36,20 +15,52 @@ include_once "head.php"?>
 <body>
 <?php include "header.php"; ?>
 
-<div class="container">
-
-<!-- 
--Puxar do banco quantos pares estão com algum registro e armazenar em session 
--Limi
-
-
-
--->
-
-
-
-
+<div class="conteiner-flex">
+    <h1 class="titulo"> Criptomoedas Registradas: </h1>
 </div>
+
+
+<div class="container">
+    <div class="row g-3 d-flex"> 
+        
+        <!--<div class="col-md-4 justify-content-center conteiner-pai-cripto ">
+            <div class="conteiner-criptos">
+                <h3>Criptomoeda</h3>
+                <p>Primeira Vela: </p>
+                <p>Ultima Vela: </p>
+                <p>Total de Registros: </p>
+            </div>    
+        </div>-->
+
+        <?php
+        if(isset($_SESSION["dados_ativos"]) && !empty($_SESSION["dados_ativos"])){
+        foreach ($_SESSION["dados_ativos"] as $cripto_ativa => $dados){?>
+
+            
+            <div class="col-md-4 justify-content-center conteiner-pai-cripto ">
+                <div class="conteiner-criptos">
+                    <h3><?= $dados["simbolo"] ?></h3>
+                    <p>Primeira Vela: <?=$dados["dt_inicial"]?></p>
+                    <p>Ultima Vela: <?=$dados["dt_final"]?></p>
+                    <p>Total de Registros: <?=$dados["total_registros"]?></p>
+                </div>    
+            </div>
+
+
+
+        <?php }
+        }
+        
+        else{
+            echo '<h3>Nenhuma criptomoeda encontrada ainda, clique <a href="gerador.php">aqui</a> para adicionar sua primeira</h3>';
+        }
+
+        ?>
+
+    </div>
+</div>
+
+
 <script>
 
     $(document).ready(function(){
@@ -78,4 +89,5 @@ include_once "head.php"?>
     });
 
 </script>
-<?php include_once "footer.php"; ?>
+<?php include_once "footer.php"; 
+session_destroy();?>

@@ -216,23 +216,34 @@ function pega_simbolos($conexao){
 
 function pega_simbolos_ativos($conexao){
 
-    $query = "select distinct symbol from tempo_1d";
+    $query = "SELECT 
+    MAX(horario_abertura) AS horario_abertura_max,
+    MIN(horario_abertura) AS horario_abertura_min,
+	COUNT(*) AS total_registros,
+    symbol
+    FROM 
+    tempo_1d 
+    GROUP BY (symbol)";
 
     $resultado = mysqli_query($conexao, $query);
 
     if(mysqli_num_rows($resultado) > 0){
-        $simbolos_ativos = array();
 
         while($linha = mysqli_fetch_assoc($resultado)){
 
-            $simbolos_ativos[] = $linha["symbol"];
-        }
+            //setar o simbolo como chave e colocar todos os parametros dentro dessa chave.
+            $_SESSION["dados_ativos"][$linha["symbol"]] = array(
+                "simbolo" => $linha["symbol"],
+                "dt_inicial" => $linha["horario_abertura_min"],
+                "dt_final" => $linha["horario_abertura_max"],
+                "total_registros" => $linha["total_registros"]);
 
-        $_SESSION["simbolos_ativos"] = $simbolos_ativos;
-         
+        }         
+    }
+    
     }
 
-}
+
 
 
 function hoje(){

@@ -1,5 +1,50 @@
+.navbar{
+    min-height: 35px!important;
+}
+
 .container{
-    width:80%;
+    width:90%;
     padding-top:50px;
 }
 
+.conteiner-flex{
+    margin-top:50px;
+    display: flex;
+    justify-content: space-around;
+
+}
+
+h1.titulo{
+    font-size: 50px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 750;
+}
+
+
+.space-grotesk{
+
+    font-family: 'Space Grotesk', sans-serif;
+
+}
+
+.montserrat{
+    font-family: 'Montserrat', sans-serif;
+}
+
+.conteiner-pai-cripto{
+    padding:10px;
+
+}
+
+.conteiner-criptos{
+    border:1px solid black;
+    border-radius: 5px;
+    transition:box-shadow 0.5s ease;
+    padding:10px;
+}
+
+.conteiner-criptos:hover{
+    border-radius: 5px;
+    box-shadow: 0 0 5px grey;
+    padding:10px;
+}
