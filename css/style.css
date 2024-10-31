@@ -48,3 +48,7 @@ h1.titulo{
     box-shadow: 0 0 5px grey;
     padding:10px;
 }
+
+.empty_space{
+    height:150px;
+}
