@@ -244,6 +244,13 @@ function pega_simbolos_ativos($conexao){
     }
 
 
+    function atualiza_session($conexao){
+
+            pega_simbolos($conexao);
+
+            pega_simbolos_ativos($conexao);
+    }
+
 
 
 function hoje(){

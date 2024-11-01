@@ -45,5 +45,6 @@ if(!empty($simbolo_cru)){
         Par de moedas errado ou não presente na binance       
         </div>';
     }
+    atualiza_session($conexao);
 }
 ?>

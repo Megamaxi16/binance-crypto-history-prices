@@ -97,6 +97,7 @@ function comecar_insercao($conexao, $simbolo, $intervalo, $timestamp_inicio_cham
     }
     $fim_exec = microtime(true);
     $tempo_exec = $fim_exec - $comeco_exec;
+    atualiza_session($conexao);
     return "<br>Inserido com sucesso!<br><br>tempo de execução:". $tempo_exec;
 }
 
@@ -114,7 +115,7 @@ function insere_banco_tempo($conexao, $dados, $tabela, $simbolo, $incremento, $t
         [2] = Preço Máximo no intervalo
         [3] = Preço Mínimo no intervalo
         [4] = Preço de Fechamento
-        [5] = Volume total (to armazenando isso????)
+        [5] = Volume total
         */
 
         //parar concatenação quando ficar igual ou maior que o tempo final

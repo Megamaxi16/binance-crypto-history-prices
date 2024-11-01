@@ -28,4 +28,10 @@ else{
     echo "tem coisa que não passou no if";
 }
 
+unset($symbol);
+unset($tempo_grafico);
+unset($data_inicial);
+unset($data_final);
+
+
 ?>

@@ -115,7 +115,7 @@ include_once "head.php"?>
             //let url = "https://api.binance.com/api/v3/klines/?symbol="+ simboloPesquisa + "&interval=1d&startTime=0&limit=1"
 
             $.ajax({
-                url: "back-ajax/index_jquery.php",
+                url: "back-ajax/gerador_datas_jquery.php",
                 type: 'POST',
                 data: {symbol: simboloPesquisa },
                 success: function(primeiraData){
